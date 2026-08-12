@@ -1,0 +1,36 @@
+name: Build AadharToken APK
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Extract project
+        run: |
+          unzip -q AadharTokenApp_Project.zip -d extracted
+          find extracted -maxdepth 3 -type f | head -50
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Build APK
+        run: |
+          PROJECT_DIR=$(find extracted -name gradlew -type f -exec dirname {} \; | head -1)
+          cd "$PROJECT_DIR"
+          chmod +x gradlew
+          ./gradlew assembleDebug
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: AadharToken
+          path: '**/build/outputs/apk/**/*.apk'
