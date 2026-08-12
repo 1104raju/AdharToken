@@ -14,7 +14,7 @@ jobs:
       - name: Extract project
         run: |
           unzip -q AadharTokenApp_Project.zip -d extracted
-          find extracted -maxdepth 3 -type f | head -50
+          find extracted -maxdepth 3 -type f
 
       - name: Setup Java
         uses: actions/setup-java@v4
@@ -23,21 +23,15 @@ jobs:
           java-version: '17'
 
       - name: Setup Gradle
-  uses: gradle/actions/setup-gradle@v4
+        uses: gradle/actions/setup-gradle@v4
 
-- name: Build APK
-  run: |
-    cd extracted
-    gradle assembleDebug
-
-- name: Upload APK
-  uses: actions/upload-artifact@v4
-  with:
-    name: AadharToken
-    path: 'extracted/app/build/outputs/apk/**/*.apk'
+      - name: Build APK
+        run: |
+          cd extracted
+          gradle assembleDebug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: AadharToken
-          path: '**/build/outputs/apk/**/*.apk'
+          path: extracted/app/build/outputs/apk/**/*.apk
