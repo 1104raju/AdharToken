@@ -13,7 +13,7 @@ jobs:
 
       - name: Extract project
         run: |
-          unzip -q AadharTokenApp_Project.zip -d extracted
+          unzip -q AadharTokenApp_v6_Report_Bluetooth_USB.zip -d extracted
           find extracted -maxdepth 3 -type f
 
       - name: Setup Java
