@@ -1,0 +1,38 @@
+name: Build AadharToken Windows EXE
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Extract Windows project
+        shell: pwsh
+        run: |
+          Expand-Archive -Path AadharToken_Windows_Project.zip -DestinationPath windows-project -Force
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install PyInstaller
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyinstaller
+
+      - name: Build Windows EXE
+        working-directory: windows-project
+        run: |
+          pyinstaller --onefile --windowed AadharToken.py
+
+      - name: Upload Windows EXE
+        uses: actions/upload-artifact@v4
+        with:
+          name: AadharToken-Windows
+          path: windows-project/dist/AadharToken.exe
