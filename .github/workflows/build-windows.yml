@@ -9,15 +9,15 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Extract Windows project
         shell: pwsh
         run: |
-          Expand-Archive -Path AadharToken_Windows_Project.zip -DestinationPath windows-project -Force
+          Expand-Archive -Path AadharToken_Windows_Project_V2.zip -DestinationPath windows-project -Force
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: '3.12'
 
@@ -34,5 +34,5 @@ jobs:
       - name: Upload Windows EXE
         uses: actions/upload-artifact@v4
         with:
-          name: AadharToken-Windows
+          name: AadharToken-Windows-V2
           path: windows-project/dist/AadharToken.exe
